@@ -6,6 +6,8 @@ import os
 import time
 from supabase import create_async_client, Client as SupabaseClient
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
+import datetime,asyncio
 
 load_dotenv("keys.env")
 account_sid=os.getenv("account_sid")
@@ -130,8 +132,9 @@ async def whatsapp_webhook(request:Request):
             }).execute()
     except Exception as e:
         print("Supabase error: ",e)
-    print("HelloTest")
-    # #replying with a formatted response
+    print(resp1)
+    print(reply1)
+    #replying with a formatted response
     # try:
     #     client.messages.create(
     #         from_=To,
@@ -142,7 +145,7 @@ async def whatsapp_webhook(request:Request):
     # except TwilioRestException as e:
     #     print("Twilio error: ",e)
 
-    # #simple reply to user
+    #simple reply to user
     # try:
     #     client.messages.create(
     #         from_=To,
@@ -153,3 +156,60 @@ async def whatsapp_webhook(request:Request):
     #     print("Twilio error: ",e)
 
     # return PlainTextResponse("OK")
+
+
+def get_today_epoch_range():
+    """Return start and end epoch timestamps for today"""
+    now = datetime.datetime.now()
+    start_of_day = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+    end_of_day = datetime.datetime(now.year, now.month, now.day, 23, 59, 59)
+    return int(start_of_day.timestamp()), int(end_of_day.timestamp())
+
+async def send_daily_summary():
+
+    """Fetch today's expenses for all users and send WhatsApp summary"""
+    try:
+        supabase = await init_supabase()
+        start_epoch, end_epoch = get_today_epoch_range()
+
+        # Get all users who have expenses today
+        data = await supabase.table("expenses_record") \
+            .select("*") \
+            .gte("timestamp", start_epoch) \
+            .lte("timestamp", end_epoch) \
+            .execute()
+
+        rows = data.data
+        if not rows:
+            print("No expenses recorded today.")
+            return
+
+        # Group expenses by mobile_number
+        user_expenses = {}
+        for r in rows:
+            user_expenses.setdefault(r["mobile_number"], []).append(r)
+
+        # Send each user their own summary
+        for mobile, items in user_expenses.items():
+            total = sum(r["amount"] for r in items)
+            # lines = [f"{r['item_name']} - {r['amount']}" for r in items]
+            expense_list = [(r["item_name"], r["amount"]) for r in items]
+            lines = format_expense_message(expense_list)
+            message = "Today's Expenses:\n" + f"\n{lines}" + "```\n"+f"{'-'*25}\nTotal = {total}"+ "\n```"
+            print(message)
+            # Send via Twilio
+            client.messages.create(
+                from_= "whatsapp:+14155238886",
+                to=f"whatsapp:{mobile}",   # add prefix back
+                body=message
+            )
+            print(f"✅ Daily summary sent to {mobile}")
+
+    except Exception as e:
+        print("Error in daily summary:", e)
+
+# Background scheduler
+scheduler = BackgroundScheduler()
+# Run every day at 21:00 (9 PM) → adjust time as you like
+scheduler.add_job(lambda: asyncio.run(send_daily_summary()), "cron", hour=17, minute=43)
+scheduler.start()
