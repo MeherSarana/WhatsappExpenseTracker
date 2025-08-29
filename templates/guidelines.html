@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guidelines - MyHisab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #25D366;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: #25D366;
+        }
+
+        .login-btn {
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #128C7E;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 3rem 0;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        /* Section with Image on Left, Text on Right */
+        .section-left-image {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
+        }
+
+        .image-container {
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .actual-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Section with Text on Left, Image on Right */
+        .section-right-image {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
+        }
+
+        /* Video Section */
+        .video-section {
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .video-container {
+            background: #000;
+            border-radius: 8px;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 20px solid #333;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+
+        .actual-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        /* Step by Step Guide */
+        .steps-section {
+            padding: 3rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #25D366;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            border-top: 1px solid #eee;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #25D366;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #666;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #25D366;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 1rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                gap: 1rem;
+            }
+
+            .section-left-image,
+            .section-right-image {
+                grid-template-columns: 1fr;
+            }
+
+            .text-content {
+                padding: 2rem;
+            }
+
+            .video-section {
+                padding: 2rem;
+            }
+
+            .steps-section {
+                padding: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Hidden class for transitions */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/home" class="logo">MyHisab</a>
+                <nav class="nav">
+                    <a href="/home">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/guidelines">Guidelines</a>
+                    <button class="login-btn" href="/login"><a style="text-decoration: none; color: white;" href="/login">Login</a></button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">How to Use WhatsappKhata</h1>
+            <p class="page-subtitle">Follow these simple steps to start tracking your expenses effortlessly through WhatsApp</p>
+
+            <!-- Getting Started Section -->
+            <div class="content-section">
+                <div class="section-left-image">
+                    <div class="image-container">
+                        <div class="image-placeholder" id="getting-started-image">
+                            <!-- Replace with actual image -->
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                                <div>Getting Started Image</div>
+                                <div style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">Click to load actual image</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <h2 class="section-title">Getting Started with WhatsappKhata</h2>
+                        <p class="section-description">
+                            WhatsappKhata makes expense tracking as simple as sending a WhatsApp message. 
+                            No need to download additional apps or remember complex procedures. Simply send 
+                            your expense as a message and let our AI-powered system handle the categorization 
+                            and tracking for you. Start by registering your WhatsApp number on our platform 
+                            and begin your journey towards better financial management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Format Section -->
+            <div class="content-section">
+                <div class="section-right-image">
+                    <div class="text-content">
+                        <h2 class="section-title">Simple Message Format</h2>
+                        <p class="section-description">
+                            Sending expense information is incredibly easy. Just type the item name followed 
+                            by the amount. For example: "Apple 50" or "Coffee 120". Our intelligent system 
+                            will automatically understand and categorize your expense. You can send multiple 
+                            expenses in separate messages, and each will be processed individually. The system 
+                            recognizes various formats and currencies, making it flexible for different users.
+                        </p>
+                    </div>
+                    <div class="image-container">
+                        <div class="image-placeholder" id="message-format-image">
+                            <!-- Replace with actual image -->
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+                                <div>Message Format Examples</div>
+                                <div style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">Click to load actual image</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Tutorial Section -->
+            <div class="content-section">
+                <div class="video-section">
+                    <h2 class="section-title">Watch How It Works</h2>
+                    <p class="section-description" style="margin-bottom: 0;">
+                        See WhatsappKhata in action with this comprehensive tutorial that walks you through 
+                        every step of the process.
+                    </p>
+                    
+                    <div class="video-container" id="tutorial-video-container">
+                        <div class="video-placeholder" onclick="loadVideo()">
+                            <div class="play-button">
+                                <div class="play-icon"></div>
+                            </div>
+                            <div>How to Use WhatsappKhata</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.5rem;">Click to watch tutorial</div>
+                        </div>
+                        <!-- Video will be loaded here -->
+                        <video class="actual-video hidden" controls id="tutorial-video">
+                            <source src="tutorial-video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Reports Section -->
+            <div class="content-section">
+                <div class="section-left-image">
+                    <div class="image-container">
+                        <div class="image-placeholder" id="reports-image">
+                            <!-- Replace with actual image -->
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                                <div>Daily Reports Sample</div>
+                                <div style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">Click to load actual image</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <h2 class="section-title">Understanding Your Daily Reports</h2>
+                        <p class="section-description">
+                            Every day at your chosen time, WhatsappKhata sends you a comprehensive summary 
+                            of your expenses. The report includes your total spending, category-wise breakdown, 
+                            and insights into your spending patterns. You can customize when you receive these 
+                            reports to fit your schedule. The reports help you stay aware of your spending 
+                            habits and make informed financial decisions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step by Step Guide -->
+            <div class="content-section">
+                <div class="steps-section">
+                    <h2 class="section-title">Step-by-Step Guide</h2>
+                    <p class="section-description">Follow these simple steps to get started with WhatsappKhata</p>
+                    
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h3 class="step-title">Register</h3>
+                            <p class="step-description">Sign up with your WhatsApp number on our platform</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h3 class="step-title">Send Message</h3>
+                            <p class="step-description">Type your expense like "Coffee 150" and send it</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h3 class="step-title">Auto Categorization</h3>
+                            <p class="step-description">Our AI automatically categorizes your expense</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <h3 class="step-title">Daily Reports</h3>
+                            <p class="step-description">Receive daily summaries with detailed breakdowns</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#help">Help Center</a>
+                </div>
+                <div class="social-links">
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Twitter">🐦</a>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2024 WhatsappKhata. All rights reserved.
+            </div>
+        </div>
+    </footer> -->
+</body>
+</html>

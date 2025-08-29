@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MyHisab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #25D366;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #25D366;
+        }
+
+        .signup-link {
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .signup-link:hover {
+            background: #128C7E;
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .login-visual {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .visual-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .visual-icon svg {
+            width: 60px;
+            height: 60px;
+            color: white;
+        }
+
+        .visual-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .visual-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .login-form-section {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #25D366;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-code {
+            width: 100px;
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .otp-input:focus {
+            border-color: #25D366;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+        }
+
+        .otp-timer {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .resend-otp {
+            background: none;
+            border: none;
+            color: #25D366;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .resend-otp:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            margin-left: auto;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #128C7E;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #666;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            border-color: #25D366;
+            color: #25D366;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+        }
+
+        .signup-prompt a {
+            color: #25D366;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.5rem;
+            font-weight: bold;
+            color: #666;
+            position: relative;
+        }
+
+        .step.active {
+            background: #25D366;
+            color: white;
+        }
+
+        .step.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 40px;
+            height: 2px;
+            background: #e9ecef;
+            transform: translateY(-50%);
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step.completed::after {
+            background: #28a745;
+        }
+
+        .phone-step {
+            display: block;
+        }
+
+        .otp-step {
+            display: block   ;
+        }
+
+        .otp-step.active {
+            display: block;
+        }
+
+        .phone-step.hidden {
+            display: none;
+        }
+
+        /* Quick Login */
+        .quick-login {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quick-login-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .recent-numbers {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .recent-number {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .recent-number:hover {
+            border-color: #25D366;
+            background: #e8f5e8;
+        }
+
+        .recent-number-phone {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .recent-number-name {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                gap: 1rem;
+            }
+
+            .main {
+                padding: 2rem 0;
+            }
+
+            .login-container {
+                grid-template-columns: 1fr;
+                margin: 0 1rem;
+            }
+
+            .login-visual {
+                padding: 2rem;
+            }
+
+            .visual-title {
+                font-size: 1.5rem;
+            }
+
+            .login-form-section {
+                padding: 2rem;
+            }
+
+            .otp-inputs {
+                gap: 0.25rem;
+            }
+
+            .otp-input {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .back-btn {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+   <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/home" class="logo">MyHisab</a>
+                <nav class="nav">
+                    <a href="/home">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/guidelines">Guidelines</a>
+                    <button class="login-btn" href="/login"><a style="text-decoration: none; color: white;" href="/login">Login</a></button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="login-container">
+            <!-- Visual Side -->
+            <div class="login-visual">
+                <div class="visual-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/>
+                        <polyline points="10,17 15,12 10,7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                </div>
+                <h2 class="visual-title">Welcome Back</h2>
+                <p class="visual-subtitle">
+                    Continue tracking your expenses seamlessly. Enter your WhatsApp number 
+                    and we'll send you a quick login code.
+                </p>
+            </div>
+
+            <!-- Form Side -->
+            <div class="login-form-section">
+                <div class="step-indicator">
+                    <!-- <div class="step active" id="step1">1</div> -->
+                    <div class="step" id="step2">2</div>
+                </div>
+
+                <div class="form-header">
+                    <h1 class="form-title" id="formTitle">Sign In</h1>
+                    <!-- <p class="form-subtitle" id="formSubtitle">Enter your WhatsApp number to continue</p> -->
+                </div>
+                <!-- <form class="login-form" action = api/login method="get">
+                    Step 1: Phone Number
+                    <div class="phone-step" id="phoneStep">
+                        <div class="form-group">
+                            <label for="phone" class="form-label">WhatsApp Number</label>
+                            <div class="phone-input-group">
+                                <input type="text" class="form-input country-code" value="+91" readonly>
+                                <input type="tel" id="mobile" name="mobile" class="form-input phone-input" value="{{ mobile or '' }}" placeholder="Enter your WhatsApp number" required>
+                            </div>
+                            <div class="error-message" id="phoneError"></div>
+                        </div>
+                        <button type="submit" class="login-btn" id="sendCodeBtn" onclick="sendLoginCode()">Send Verification Code</button>
+                    </div> -->
+
+                    <!-- Step 2: OTP Verification -->
+                    <form class="login-form" action = /api/otp-login method="post">
+                    <input type="hidden" name="mobile" value="{{ mobile }}">
+                    <div class="otp-step" id="otpStep">
+                        <div class="form-group">
+                            <label class="form-label">Enter Login Code</label>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                                Check your WhatsApp for a 6-digit login code
+                            </p>
+                            <div class="otp-inputs">
+                                <input type="text" class="otp-input" maxlength="1" name ="d1" data-index="0">
+                                <input type="text" class="otp-input" maxlength="1" name ="d2" data-index="1">
+                                <input type="text" class="otp-input" maxlength="1" name ="d3" data-index="2">
+                                <input type="text" class="otp-input" maxlength="1" name ="d4" data-index="3">
+                                <input type="text" class="otp-input" maxlength="1" name ="d5" data-index="4">
+                                <input type="text" class="otp-input" maxlength="1" name ="d6" data-index="5">
+                            </div>
+                            <div class="error-message" id="otpError"></div>
+                        </div>
+
+                        <!-- <div class="otp-timer">
+                            <span id="timerText">Resend code in <span id="countdown">60</span> seconds</span>
+                            <br>
+                            <button type="button" class="resend-otp" id="resendBtn" disabled>
+                                Resend Code
+                            </button>
+                        </div> -->
+
+                        <div class="button-group">
+                            <a href="/login"><button type="button" class="back-btn">Back</button></a>
+                            <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="signup-prompt">
+                    Don't have an account? <a href="/signup">Create one here</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll(".otp-input");
+
+        inputs.forEach((input, index) => {
+            input.addEventListener("input", function () {
+                if (this.value.length === this.maxLength) {
+                    // move to next input if available
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                }
+            });
+
+            input.addEventListener("keydown", function (e) {
+                if (e.key === "Backspace" && this.value === "" && index > 0) {
+                    // go back to previous input if backspacing
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+    });
+</script>
+</html>

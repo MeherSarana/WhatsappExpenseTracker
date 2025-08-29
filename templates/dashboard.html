@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - MyHisab</title>
+  <style>
+    /* --- keep your existing CSS unchanged (from your file) --- */
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#333;background:#f8f9fa}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .header{background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.1);padding:1rem 0}
+    .header-content{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-size:1.5rem;font-weight:bold;color:#25D366}
+    .nav{display:flex;gap:2rem;align-items:center}
+    .nav a{text-decoration:none;color:#666;font-weight:500}
+    .nav a:hover{color:#25D366}
+    .logout-btn{background:#dc3545;color:#fff;padding:0.5rem 1.5rem;border:none;border-radius:6px;font-weight:500;cursor:pointer}
+    .logout-btn:hover{background:#c82333}
+    .main{padding:2rem 0}
+    .hero-section{background:#fff;border-radius:12px;box-shadow:0 4px 6px rgba(0,0,0,0.07);margin-bottom:2rem;overflow:hidden}
+    .hero-content{padding:2rem}
+    .hero-title{font-size:1.8rem;font-weight:bold;color:#333;margin-bottom:1.5rem}
+    .expense-table{width:100%;border-collapse:collapse;margin-top:1rem}
+    .expense-table th,.expense-table td{padding:.75rem;text-align:left;border-bottom:1px solid #e9ecef}
+    .expense-table th{background:#f8f9fa;font-weight:600;color:#495057;font-size:.9rem}
+    .expense-table td{font-size:.9rem}
+    .expense-table tr:hover{background:#f8f9fa}
+    .amount{font-weight:600;color:#dc3545}
+    .no-expenses{text-align:center;color:#666;font-style:italic;padding:2rem}
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+    .summary-card{background:#fff;border-radius:12px;box-shadow:0 4px 6px rgba(0,0,0,0.07);padding:2rem}
+    .summary-title{font-size:1.3rem;font-weight:bold;color:#333;margin-bottom:1.5rem}
+    .summary-stats{display:grid;gap:1rem}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;padding:.75rem;background:#f8f9fa;border-radius:6px}
+    .stat-label{color:#666;font-size:.9rem}
+    .stat-value{font-weight:600;color:#333;font-size:1rem}
+    .total-amount{background:#25D366;color:#fff}
+    .total-amount .stat-label,.total-amount .stat-value{color:#fff}
+    .category-breakdown{margin-top:1rem}
+    .category-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid #f1f3f4}
+    .category-item:last-child{border-bottom:none}
+    .category-name{font-size:.9rem;color:#555}
+    .category-amount{font-weight:600;color:#dc3545;font-size:.9rem}
+    @media (max-width:768px){
+      .summary-grid{grid-template-columns:1fr;gap:1rem}
+      .nav{gap:1rem}
+      .hero-content{padding:1.5rem}
+      .summary-card{padding:1.5rem}
+      .expense-table{font-size:.8rem}
+      .expense-table th,.expense-table td{padding:.5rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">MyHisab</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/settings">Settings</a>
+          <a href="/logout">
+            <button class="logout-btn">Logout</button>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="container">
+
+      <!-- Today -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">Today's Expenses</h1>
+          <table class="expense-table">
+            <thead>
+              <tr><th>Time</th><th>Item</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              {% if today_rows and today_rows|length > 0 %}
+                {% for r in today_rows %}
+                  <tr>
+                    <td>{{ r.time }}</td>
+                    <td>{{ r.item }}</td>
+                    <td class="amount">₹{{ r.amount }}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="3" class="no-expenses">No expenses recorded today</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Summaries -->
+      <div class="summary-grid">
+        <!-- 7 Days -->
+        <div class="summary-card">
+          <h2 class="summary-title">Last 7 Days Summary</h2>
+          <div class="summary-stats">
+            <div class="stat-item total-amount">
+              <span class="stat-label">Total Spent</span>
+              <span class="stat-value">₹{{ week_total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Average per Day</span>
+              <span class="stat-value">₹{{ week_avg }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Transactions</span>
+              <span class="stat-value">{{ week_txn }}</span>
+            </div>
+          </div>
+          <div class="category-breakdown">
+            <h3 style="margin-bottom:1rem;color:#666;font-size:1rem;">Category Breakdown</h3>
+            {% for cat, amt in week_cat %}
+              <div class="category-item">
+                <span class="category-name">{{ cat }}</span>
+                <span class="category-amount">₹{{ amt }}</span>
+              </div>
+            {% endfor %}
+            {% if week_cat|length == 0 %}
+              <div class="category-item"><span class="category-name">—</span><span class="category-amount">₹0</span></div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- 30 Days -->
+        <div class="summary-card">
+          <h2 class="summary-title">Last 30 Days Summary</h2>
+          <div class="summary-stats">
+            <div class="stat-item total-amount">
+              <span class="stat-label">Total Spent</span>
+              <span class="stat-value">₹{{ month_total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Average per Day</span>
+              <span class="stat-value">₹{{ month_avg }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Transactions</span>
+              <span class="stat-value">{{ month_txn }}</span>
+            </div>
+          </div>
+          <div class="category-breakdown">
+            <h3 style="margin-bottom:1rem;color:#666;font-size:1rem;">Category Breakdown</h3>
+            {% for cat, amt in month_cat %}
+              <div class="category-item">
+                <span class="category-name">{{ cat }}</span>
+                <span class="category-amount">₹{{ amt }}</span>
+              </div>
+            {% endfor %}
+            {% if month_cat|length == 0 %}
+              <div class="category-item"><span class="category-name">—</span><span class="category-amount">₹0</span></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>
