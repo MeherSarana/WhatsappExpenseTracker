@@ -2,6 +2,7 @@ import concurrent.futures
 from twilio.rest import Client as TwilioClient
 import asyncio
 from src.integrations.openai import *
+from src.integrations.resend import *
 from src.config.db import * # includes: import_env import *
 from util_functions.utilities import *
 
@@ -122,6 +123,17 @@ async def send_daily_summary():
                 body=message
             )
             print(f"✅ Daily summary sent to {mobile}")
+
+            # Send via Email
+            res = await supclient.table("users").select("email").eq("mobile_number", mobile).single().execute()
+            if res.data and res.data.get("email"):
+                email_body = f"""
+                <h2>📊 Daily Expense Summary</h2>
+                <p>Here’s your summary for today:</p>
+                <pre>{lines}</pre>
+                <p><b>Total: ₹{total}</b></p>
+                """
+                await send_email(res.data["email"], "Your Daily Expense Summary", email_body)
 
     except Exception as e:
         print("Error in daily summary:", e)

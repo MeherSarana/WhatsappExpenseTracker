@@ -2,6 +2,7 @@
 
 from src.integrations.twilio_works import * # includes: from src.config.db import * && from import_env import *
 from util_functions.utilities import generate_TOTP_secret, current_epoch_time
+from src.integrations.resend import *
 
 twil_number = os.getenv("twilio_number")
 
@@ -41,4 +42,17 @@ async def register_user(supclient, mobile):
             "Type /help to see all available commands."
         )
     )
+
+    # Send Email welcome (if provided)
+    res = await supclient.table("users").select("email").eq("mobile_number", mobile).single().execute()
+    if res.data and res.data.get("email"):
+        body = """
+        <h2>🎉 Welcome to MyHisab!</h2>
+        <p>Thanks for signing up with your email.</p>
+        <p>You can now start adding expenses via WhatsApp.</p>
+        <p>At the end of the day, you'll also receive a daily summary here.</p>
+        """
+        await send_email(res.data.get("email"), "Welcome to MyHisab!", body)
+
+    return True
     return True

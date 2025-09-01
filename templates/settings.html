@@ -295,6 +295,101 @@
             .danger-zone {
                 padding: 1.5rem;
             }
+
+            /* Dropdown Beautification */
+            .dropdown-container {
+            position: relative;
+            display: inline-block;
+            }
+
+            .styled-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #25D366;
+            color: white;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            }
+
+            .styled-select:hover {
+            background-color: #128C7E;
+            }
+
+            .styled-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
+            }
+
+            /* Add dropdown arrow */
+            .styled-select::after {
+            content: "▼";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: white;
+            }
+
+            .custom-time-input {
+            background-color: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            }
+
+            .custom-time-input:hover {
+            background-color: #128C7E;
+            transform: scale(1.03);
+            }
+
+            .custom-time-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
+            }
+            .time-setting {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            }
+
+            .styled-select {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            font-weight: 500;
+            }
+
+            .save-btn {
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            }
+
+            .save-btn:hover {
+            background: #128C7E;
+            }
+
+
+
         }
     </style>
 </head>
@@ -306,7 +401,9 @@
                 <div class="logo">MyHisab</div>
                 <nav class="nav">
                     <a href="/dashboard">Dashboard</a>
-                    <a href="/settings" class="active">Settings</a>
+                    <!-- <a href="/about">About</a>
+                    <a href="/guidelines">Guidelines</a> -->
+                    <a href="/settings">Settings</a>
                     <a href="/logout">
                         <button class="logout-btn">Logout</button>
                     </a>
@@ -372,55 +469,25 @@
                 <div>
 
                 </div>    
-                    <!-- Notification Settings
-                    <div class="settings-card">
+                <!-- Notification Settings -->
+                <div class="settings-card">
                         <h2 class="card-title">Notification Preferences</h2>
                         
-                        <div class="setting-item">
+                       <div class="setting-item">
                             <div>
-                                <div class="setting-label">Daily Summary</div>
-                                <div class="setting-value">Receive daily expense summaries</div>
+                                <div class="setting-label">Daily Summary Time</div>
+                                <div class="setting-value">Choose your preferred time</div>
                             </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div>
-                                <div class="setting-label">Weekly Reports</div>
-                                <div class="setting-value">Get weekly spending insights</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div>
-                                <div class="setting-label">Budget Alerts</div>
-                                <div class="setting-value">Notify when approaching limits</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div>
-                                <div class="setting-label">WhatsApp Reminders</div>
-                                <div class="setting-value">Expense tracking reminders</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
+                            <form action="/api/update-summary-time" method="post">
+                                <div class="time-setting">
+                                    <input type="time" id="summaryTime" name="summary_time" 
+                                        class="styled-select" value="{{ summary_time or '21:00' }}">
+                                    <button type="submit"  id="saveTimeBtn" class="edit-btn">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Danger Zone -->
                 <div class="danger-zone">
