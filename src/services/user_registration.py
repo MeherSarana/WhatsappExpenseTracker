@@ -55,4 +55,4 @@ async def register_user(supclient, mobile):
         await send_email(res.data.get("email"), "Welcome to MyHisab!", body)
 
     return True
-    return True
+    

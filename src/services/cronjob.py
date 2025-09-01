@@ -5,7 +5,7 @@ from src.config.db import get_supabase
 from fastapi import APIRouter
 
 scheduler = AsyncIOScheduler()
-router = APIRouter()
+# router = APIRouter()
 
 async def schedule_user_jobs(mobile: str, cron_time: str):
     """(Re)schedule a single user's summary job."""
@@ -40,7 +40,7 @@ async def schedule_all_users():
 
     for u in users.data:
         mobile = u.get("mobile_number")
-        cron_time = u.get("cron_time") or "21:00"
+        cron_time = u.get("cron_time") or "18:00"
         await schedule_user_jobs(mobile, cron_time)
 
 async def init_scheduler():

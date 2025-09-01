@@ -74,9 +74,10 @@ def clean_number(raw_number):
 def handle_help():
     return (
         "Hi! Here are the commands you can use:\n"
-        "/help — Used to Check Out the Commands \n"
-        "/TotalExpenseOfToday — get today’s total and item breakdown\n"
-        "/Delete_Account — delete your account & all expenses (requires confirmation)\n\n"
+        "/help — view all available commands\n"
+        "/totalexpenseuntilnow — get today’s total and item breakdown\n"
+        "/categorize_items — get today’s category-wise expense summary\n"
+        "/delete_account — delete your account & all expenses (requires confirmation)\n"
         # "📌 Examples of adding expenses:\n"
         "📌 Guidelines-Examples for sending expenses:\n"
         # "Apple 50\n"
