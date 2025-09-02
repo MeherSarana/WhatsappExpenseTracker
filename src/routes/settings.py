@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Any, Tuple
-from src.services.cronjob import schedule_user_jobs
+from src.services.cronjob import init_scheduler, schedule_user_jobs
 from util_functions.handle_otp_jwt import get_loggedin_user
 from src.integrations.openai import *
 from src.config.db import get_supabase   # async supabase factory
@@ -54,6 +54,7 @@ async def update_summary_time(request: Request,summary_time: str = Form(...)):
     if not user:
         return RedirectResponse("/login", status_code=302)
 
+    await init_scheduler()
     await schedule_user_jobs(user["mobile_number"], summary_time)
     await supclient.table("users").update({"cron_time": summary_time}).eq("id", user["id"]).execute()
     return RedirectResponse("/settings", status_code=303)

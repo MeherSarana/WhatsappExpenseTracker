@@ -261,6 +261,22 @@
         .login-btn {
             background: #25D366;
             color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #128C7E;
+        }
+
+        .login1-btn {
+            background: #25D366;
+            color: white;
             padding: 0.5rem 1.5rem;
             border: none;
             border-radius: 6px;
@@ -270,9 +286,10 @@
             transition: background 0.3s;
         }
 
-        .login-btn:hover {
+        .login1-btn:hover {
             background: #128C7E;
         }
+
 
         .back-btn {
             background: transparent;
@@ -502,7 +519,7 @@
                     <a href="/home">Home</a>
                     <a href="/about">About</a>
                     <a href="/guidelines">Guidelines</a>
-                    <button class="login-btn" href="/login"><a style="text-decoration: none; color: white;" href="/login">Login</a></button>
+                    <button class="login1-btn" href="/login"><a style="text-decoration: none; color: white;" href="/login">Login</a></button>
                 </nav>
             </div>
         </div>
@@ -531,7 +548,7 @@
             <div class="login-form-section">
                 <div class="step-indicator">
                     <!-- <div class="step active" id="step1">1</div> -->
-                    <div class="step" id="step2">2</div>
+                    <div class="step active" id="step2">2</div>
                 </div>
 
                 <div class="form-header">
@@ -582,14 +599,14 @@
 
                         <div class="button-group">
                             <a href="/login"><button type="button" class="back-btn">Back</button></a>
-                            <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+                            <button type="submit" class="login1-btn" id="loginBtn">Sign In</button>
                         </div>
                     </div>
                 </form>
 
-                <div class="signup-prompt">
+                <!-- <div class="signup-prompt">
                     Don't have an account? <a href="/signup">Create one here</a>
-                </div>
+                </div> -->
             </div>
         </div>
     </main>

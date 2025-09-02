@@ -12,7 +12,7 @@ async def schedule_user_jobs(mobile: str, cron_time: str):
     try:
         hour, minute, *_ = map(int, cron_time.split(":"))
     except Exception:
-        hour, minute = 21, 0  # default fallback
+        hour, minute = 22, 0  # default fallback
 
     async def job(m=mobile):
         await send_daily_summary()
@@ -40,7 +40,7 @@ async def schedule_all_users():
 
     for u in users.data:
         mobile = u.get("mobile_number")
-        cron_time = u.get("cron_time") or "18:00"
+        cron_time = u.get("cron_time") or "22:00"
         await schedule_user_jobs(mobile, cron_time)
 
 async def init_scheduler():
